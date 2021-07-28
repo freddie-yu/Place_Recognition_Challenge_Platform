@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapi.urls')),
     #path('', include('reactjs.urls')),
-    path('', include('accounts.urls'))
+    #path('', include('accounts.urls'))
 ]
 

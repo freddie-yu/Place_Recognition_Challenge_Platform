@@ -49,7 +49,7 @@ class Leaderboard extends Component {
       accessor: 'name',
     }, {
       Header: 'Algorithm Name',
-      accessor: 'algorithm_name',
+      accessor: 'title',
     }, {
       Header: 'Date',
       accessor: 'create_date',

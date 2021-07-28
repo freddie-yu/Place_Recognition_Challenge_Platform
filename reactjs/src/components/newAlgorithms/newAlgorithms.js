@@ -1,5 +1,6 @@
 // This page is "make submission" page.
 import { useState } from 'react';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -15,8 +16,7 @@ const AccountProfileDetails = (props) => {
   const [values, setValues] = useState({
     algorithmName: '',
     algorithmDescription: '',
-    projectURL: '',
-    publicationURL: '',
+    file: null
   });
 
   const handleChange = (event) => {
@@ -26,16 +26,43 @@ const AccountProfileDetails = (props) => {
     });
   };
 
+  const handleFileChange = (event) => {
+    setValues({
+      ...values,
+      file: event.target.files[0]
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(values, setValues);
+    const formData = new FormData();
+    formData.append('file', values.file, values.file.name);
+    formData.append('title', values.algorithmName);
+    formData.append('content', values.algorithmDescription);
+    const url = 'http://localhost:8000/api/myapi/';
+    axios.post(url, formData, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <form
+      onSubmit={handleSubmit}
       autoComplete="off"
       noValidate
       {...props}
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Make Submisson"
+          subheader="Please complete required fields"
+          title="Make Submission"
         />
         <Divider />
         <CardContent>
@@ -65,40 +92,10 @@ const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Algorithm Description(optional)"
+                label="Algorithm Description"
                 name="algorithmDescription"
                 onChange={handleChange}
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Project URL(optional)"
-                name="projectURL"
-                onChange={handleChange}
-                // type="number"
-                value={values.projectURL}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={12}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Publication URL(optional)"
-                name="publicationURL"
-                onChange={handleChange}
-                // type="number"
-                value={values.publicationURL}
+                value={values.algorithmDescription}
                 variant="outlined"
               />
             </Grid>
@@ -114,6 +111,9 @@ const AccountProfileDetails = (props) => {
                 Upload File
                 <input
                   type="file"
+                  name="file"
+                  accept="file/txt"
+                  onChange={handleFileChange}
                   hidden
                 />
               </Button>
@@ -134,7 +134,7 @@ const AccountProfileDetails = (props) => {
           >
             Submit
             <input
-              type="file"
+              type="submit"
               hidden
             />
           </Button>
@@ -145,3 +145,71 @@ const AccountProfileDetails = (props) => {
 };
 
 export default AccountProfileDetails;
+
+/*
+import React, { Component } from 'react';
+import axios from 'axios';
+
+class MakeSubmission extends Component {
+  state = {
+    title: '',
+    content: '',
+    file: null
+  };
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+  };
+
+  handleFileChange = (e) => {
+    this.setState({
+      file: e.target.files[0]
+    });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+    const formData = new FormData();
+    formData.append('file', this.state.file, this.state.file.name);
+    formData.append('title', this.state.title);
+    formData.append('content', this.state.content);
+    let url = 'http://localhost:8000/api/myapi/';
+    axios.post(url, formData, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(err => console.log(err))
+  };
+
+  render() {
+    return (
+      <div className="MakeSubmission">
+        <form onSubmit={this.handleSubmit}>
+          <p>
+            <input type="text" placeholder='Title' id='title' value={this.state.title} onChange={this.handleChange} required/>
+          </p>
+          <p>
+            <input type="text" placeholder='Content' id='content' value={this.state.content} onChange={this.handleChange} required/>
+
+          </p>
+          <p>
+            <input type="file"
+                   id="file"
+                   accept="file/txt"  onChange={this.handleFileChange} required/>
+          </p>
+          <input type="submit"/>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default MakeSubmission;
+*/

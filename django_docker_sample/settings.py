@@ -41,19 +41,19 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'myapi.apps.MyapiConfig',
-    'knox',
-    'accounts',
+    #'knox',
+    #'accounts',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
-}
+#REST_FRAMEWORK = {
+    #'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+#}
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -138,3 +138,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'file')
+MEDIA_URL = '/file/'
